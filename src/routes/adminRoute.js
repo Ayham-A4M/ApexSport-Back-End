@@ -27,26 +27,31 @@ router.post('/api/editProduct', verifyAdmin, upload.array('images'), async (req,
         }
 
         // Upload each file to Vercel Blob
-        const uploadPromises = req.files.map(file => {
-            const fileName = path.parse(file.originalname).name +
-                '-' + Date.now() +
-                '-' + Math.round(Math.random() * 1E9) +
-                path.extname(file.originalname);
+        const uploadPromises = req.files.map(async (file) => {
+            const fileName = `${path.parse(file.originalname).name}-${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
 
-            return put(fileName, file.buffer, { access: 'public' });
+            const blob = await put(fileName, file.buffer, {
+                access: 'public',
+                token: process.env.BLOB_READ_WRITE_TOKEN // Make sure this is in your .env
+            });
+
+            return blob.url;
         });
 
-        const blobs = await Promise.all(uploadPromises);
-        const imageUrls = blobs.map(blob => blob.url);
+        const imageUrls = await Promise.all(uploadPromises);
 
         // Now pass the image URLs to your controller
         req.body.images = imageUrls; // Attach URLs to req.body
         return editProduct(req, res); // Call your existing controller
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, msg: 'Failed to upload images' });
+        console.error('Blob upload error:', err);
+        return res.status(500).json({
+            success: false,
+            msg: 'Failed to upload images',
+            error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
     }
-})
+});
 router.get('/api/orders', getOrders)
 router.post('/api/updateOrderStatus', updateOrderStatus)
 module.exports = router;

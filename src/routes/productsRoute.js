@@ -16,34 +16,7 @@ router.get('/api/products', getProduct);
 router.get('/api/product', getProductByID);
 router.get('/api/products/:catagory', getSimilarProducts);
 
-// Modified POST route to handle Vercel Blob uploads
-// router.post('/api/products', verifyAdmin, upload.array('images'), async (req, res) => {
-//   try {
-//     if (!req.files || req.files.length === 0) {
-//       return res.status(400).json({ success: false, msg: 'No images uploaded' });
-//     }
 
-//     // Upload each file to Vercel Blob
-//     const uploadPromises = req.files.map(file => {
-//       const fileName = path.parse(file.originalname).name + 
-//                       '-' + Date.now() + 
-//                       '-' + Math.round(Math.random() * 1E9) + 
-//                       path.extname(file.originalname);
-      
-//       return put(fileName, file.buffer, { access: 'public' });
-//     });
-
-//     const blobs = await Promise.all(uploadPromises);
-//     const imageUrls = blobs.map(blob => blob.url);
-
-//     // Now pass the image URLs to your controller
-//     req.body.images = imageUrls; // Attach URLs to req.body
-//     return creatNewProduct(req, res); // Call your existing controller
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(500).json({ success: false, msg: 'Failed to upload images' });
-//   }
-// });
 router.post('/api/products', verifyAdmin, upload.array('images'), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {

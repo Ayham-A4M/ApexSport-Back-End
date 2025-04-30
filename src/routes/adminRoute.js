@@ -13,6 +13,7 @@ const getOrders = require('../controller/admin/getOrders');
 const multer = require('multer');
 const updateOrderStatus = require('../controller/admin/updateOrderStatus');
 const { put } = require('@vercel/blob'); 
+const path = require('path');
 const upload = multer({ storage: multer.memoryStorage() }); // No disk storage!
 
 router.get('/api/getStatistics', getStatistics);

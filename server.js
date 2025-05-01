@@ -13,7 +13,7 @@ const routerRefreshToken=require('./src/routes/refreshToken');
 
 // CORS is enabled for the selected origins
 const corsOptions = {
-    origin: 'http://localhost:5173',  // Your frontend URL
+    origin: true,  // Your frontend URL
     credentials: true,               // Allow cookies (JWT cookie) to be sent
 };
 

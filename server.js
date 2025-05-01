@@ -8,38 +8,44 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const routerOrder = require('./src/routes/ordersRoute');
 const routerStripe = require('./src/webhook/stripe_web_hook')
-const routerAdmin = require('./src/routes/adminRoute');
-const routerRefreshToken = require('./src/routes/refreshToken');
+const routerAdmin=require('./src/routes/adminRoute');
+const routerRefreshToken=require('./src/routes/refreshToken');
 
 // CORS is enabled for the selected origins
-const allowedOrigins = [
-    'https://apex-sport.vercel.app',
-    'https://apex-sport.vercel.app/'
-];
-
-
-
-
-
 mongoose.connect(process.env.DB_URI).then(() => {
     console.log("connected complete !!")
-}).catch(err => {
+}).catch(err=>{
     console.log(err);
 })
 
 
-// End Connect with DB
-// app.use(express.static('public'))
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
+
+const normalizeOrigin = (origin) => {
+    return origin?.endsWith('/') ? origin.slice(0, -1) : origin;
+  };
+  
+  const allowedOrigins = [
+    'https://apex-sport.vercel.app', // No trailing slash
+  ];
+  
+  app.use(cors({
+    origin: (origin, callback) => {
+      const normalizedOrigin = normalizeOrigin(origin);
+      if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
     },
-    credentials: true,
-}));
+    credentials: true, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+  }));
+  
+  // Explicitly handle OPTIONS requests (some setups need this)
+  app.options('*', cors()); // Enable preflight for all routes
+
+
 app.use(cookieParser());
 app.use((req, res, next) => {
     if (req.originalUrl === '/stripe-webhook') {

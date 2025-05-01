@@ -13,7 +13,7 @@ const routerRefreshToken=require('./src/routes/refreshToken');
 
 // CORS is enabled for the selected origins
 const corsOptions = {
-    origin: true,  // Your frontend URL
+    origin: 'https://apex-sport.vercel.app/',  // Your frontend URL
     credentials: true,               // Allow cookies (JWT cookie) to be sent
 };
 

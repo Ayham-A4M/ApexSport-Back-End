@@ -8,27 +8,38 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const routerOrder = require('./src/routes/ordersRoute');
 const routerStripe = require('./src/webhook/stripe_web_hook')
-const routerAdmin=require('./src/routes/adminRoute');
-const routerRefreshToken=require('./src/routes/refreshToken');
+const routerAdmin = require('./src/routes/adminRoute');
+const routerRefreshToken = require('./src/routes/refreshToken');
 
 // CORS is enabled for the selected origins
-const corsOptions = {
-    origin: 'https://apex-sport.vercel.app/',  // Your frontend URL
-    credentials: true,               // Allow cookies (JWT cookie) to be sent
-};
+const allowedOrigins = [
+    'https://apex-sport.vercel.app',
+    'https://apex-sport.vercel.app/'
+];
+
+
 
 
 
 mongoose.connect(process.env.DB_URI).then(() => {
     console.log("connected complete !!")
-}).catch(err=>{
+}).catch(err => {
     console.log(err);
 })
-   
+
 
 // End Connect with DB
 // app.use(express.static('public'))
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+}));
 app.use(cookieParser());
 app.use((req, res, next) => {
     if (req.originalUrl === '/stripe-webhook') {

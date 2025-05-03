@@ -7,7 +7,7 @@ const createOrder = async (req, res) => {
     const userId = new ObjectId(res.locals.id)
     const address = req.body.address;
     const productInformationFromCart = await getProductsInformationsFromCart(userId);
-    return res.status(200).send(productInformationFromCart); // we get information about each product but not the oreder products to save
+    // return res.status(200).send(productInformationFromCart); // we get information about each product but not the oreder products to save
     try {
         const checkProductOutOfStock = checkIfProductOutOfStock(productInformationFromCart)
         if (checkProductOutOfStock) { // if there any product out of stock we cancle the progress 
@@ -33,8 +33,8 @@ const createOrder = async (req, res) => {
                     
                 }
             )),
-            success_url: `https://apex-sport.vercel.app/cart`, //where will send client on success 
-            cancel_url: `https://apex-sport.vercel.app/cart`,
+            success_url: `https://www.google.com`, //where will send client on success 
+            cancel_url: `https://www.google.com`,
             metadata: {
                 userId: res.locals.id,
                 productInformationFromCart: JSON.stringify(productInformationFromCart),

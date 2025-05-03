@@ -6,7 +6,8 @@ const { calculateTotalPrice, getProductsInformationsFromCart, checkIfProductOutO
 const createOrder = async (req, res) => {
     const userId = new ObjectId(res.locals.id)
     const address = req.body.address;
-    const productInformationFromCart = await getProductsInformationsFromCart(userId); // we get information about each product but not the oreder products to save
+    const productInformationFromCart = await getProductsInformationsFromCart(userId);
+    return res.status(200).send(productInformationFromCart); // we get information about each product but not the oreder products to save
     try {
         const checkProductOutOfStock = checkIfProductOutOfStock(productInformationFromCart)
         if (checkProductOutOfStock) { // if there any product out of stock we cancle the progress 

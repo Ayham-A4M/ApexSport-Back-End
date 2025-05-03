@@ -1,12 +1,12 @@
 const userModel = require('../models/UserModal')
 
-const calculateTotalPrice = (productsInformationFromCart) => {
-    let TotalPrice = productsInformationFromCart.reduce((acc, currentvalue) => {
-        acc += (currentvalue.quantity * parseFloat(currentvalue.priceAfterDiscount));
-        return acc
-    }, 0)
-    return TotalPrice + TotalPrice * 0.05
-}
+// const calculateTotalPrice = (productsInformationFromCart) => {
+//     let TotalPrice = productsInformationFromCart.reduce((acc, currentvalue) => {
+//         acc += (currentvalue.quantity * parseFloat(currentvalue.priceAfterDiscount));
+//         return acc
+//     }, 0)
+//     return TotalPrice + TotalPrice * 0.05
+// }
 
 
 const getOrderProducts = (productsInformationFromCart) => {

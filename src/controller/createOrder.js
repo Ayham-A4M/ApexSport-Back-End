@@ -13,7 +13,7 @@ const createOrder = async (req, res) => {
             return res.status(400).send({ msg: 'Some products out of stock' })
         }
         // start progress to preaper the  order
-        const TotalPrice = calculateTotalPrice(productInformationFromCart); //its string with $ sign 
+        // const TotalPrice = calculateTotalPrice(productInformationFromCart); //its string with $ sign 
         
         const session = await stripe.checkout.sessions.create({
             //information 

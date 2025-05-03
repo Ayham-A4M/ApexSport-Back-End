@@ -74,8 +74,8 @@ const checkIfProductOutOfStock = (productsInformationFromCart) => {
     return outOfStockProducts.length > 0 ? true : false
 }
 
-
-module.exports = {
+module.exports={
     calculateTotalPrice, getOrderProducts, getProductsInformationsFromCart, checkIfProductOutOfStock
 }
+
 

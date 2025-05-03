@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongoose').Types;
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_API_KEY)
-const { calculateTotalPrice, getProductsInformationsFromCart, checkIfProductOutOfStock } = require('../helperFunctions/createOrderHelper')
+const {  getProductsInformationsFromCart, checkIfProductOutOfStock } = require('../helperFunctions/createOrderHelper')
 
 const createOrder = async (req, res) => {
     const userId = new ObjectId(res.locals.id)

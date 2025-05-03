@@ -32,8 +32,8 @@ const createOrder = async (req, res) => {
                     
                 }
             )),
-            success_url: `${process.env.CLIENT_LOCAL_HOST}cart`, //where will send client on success 
-            cancel_url: `${process.env.CLIENT_LOCAL_HOST}cart`,
+            success_url: `https://apex-sport.vercel.app/cart`, //where will send client on success 
+            cancel_url: `https://apex-sport.vercel.app/cart`,
             metadata: {
                 userId: res.locals.id,
                 productInformationFromCart: JSON.stringify(productInformationFromCart),
@@ -47,7 +47,7 @@ const createOrder = async (req, res) => {
      
 
     } catch (err) {
-        console.log(err);
+        return res.status(500).send({msg:'something went wrong'});
     }
 }
 

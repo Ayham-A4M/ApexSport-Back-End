@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongoose').Types;
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_API_KEY)
-const {  getProductsInformationsFromCart, checkIfProductOutOfStock } = require('../helperFunctions/createOrderHelper')
+const { calculateTotalPrice, getProductsInformationsFromCart, checkIfProductOutOfStock } = require('../helperFunctions/createOrderHelper')
 
 const createOrder = async (req, res) => {
     const userId = new ObjectId(res.locals.id)
@@ -14,8 +14,8 @@ const createOrder = async (req, res) => {
             return res.status(400).send({ msg: 'Some products out of stock' })
         }
         // start progress to preaper the  order
-        // const TotalPrice = calculateTotalPrice(productInformationFromCart); //its string with $ sign 
-        
+        const TotalPrice = calculateTotalPrice(productInformationFromCart); //its string with $ sign 
+
         const session = await stripe.checkout.sessions.create({
             //information 
             payment_method_types: ['card'], // different way to accept so we choose just card
@@ -27,10 +27,10 @@ const createOrder = async (req, res) => {
                         product_data: {
                             name: item.productName
                         },
-                        unit_amount: (parseFloat(item.priceAfterDiscount)+parseFloat(item.priceAfterDiscount)*0.05).toFixed(2) * 100 
+                        unit_amount: (parseFloat(item.priceAfterDiscount) + parseFloat(item.priceAfterDiscount) * 0.05).toFixed(2) * 100
                     },
                     quantity: item.quantity,
-                    
+
                 }
             )),
             success_url: `https://www.google.com`, //where will send client on success 
@@ -39,16 +39,16 @@ const createOrder = async (req, res) => {
                 userId: res.locals.id,
                 productInformationFromCart: JSON.stringify(productInformationFromCart),
                 address: address,
-              },  // where will send client in fail
+            },  // where will send client in fail
         })
-        
-         return res.status(200).send({url:session.url});
+
+        return res.status(200).send({ url: session.url });
         // before updating any data we will using stripe payment : 
 
-     
+
 
     } catch (err) {
-        return res.status(500).send({msg:'something went wrong'});
+        return res.status(500).send({ msg: 'something went wrong' });
     }
 }
 

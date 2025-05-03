@@ -20,27 +20,28 @@ mongoose.connect(process.env.DB_URI).then(() => {
 
 
 
-const normalizeOrigin = (origin) => {
-    return origin?.endsWith('/') ? origin.slice(0, -1) : origin;
-  };
+// const normalizeOrigin = (origin) => {
+//     return origin?.endsWith('/') ? origin.slice(0, -1) : origin;
+//   };
   
-  const allowedOrigins = [
-    'https://apex-sport.vercel.app', // No trailing slash
-  ];
+//   const allowedOrigins = [
+//     'https://apex-sport.vercel.app', // No trailing slash
+//   ];
   
-  app.use(cors({
-    origin: (origin, callback) => {
-      const normalizedOrigin = normalizeOrigin(origin);
-      if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, 
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
-    allowedHeaders: ['Content-Type', 'Authorization'], 
-  }));
+//   app.use(cors({
+//     origin: (origin, callback) => {
+//       const normalizedOrigin = normalizeOrigin(origin);
+//       if (!normalizedOrigin || allowedOrigins.includes(normalizedOrigin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     },
+//     credentials: true, 
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+//     allowedHeaders: ['Content-Type', 'Authorization'], 
+//   }));
+  app.use(cors());
   
   // Explicitly handle OPTIONS requests (some setups need this)
   app.options('*', cors()); // Enable preflight for all routes

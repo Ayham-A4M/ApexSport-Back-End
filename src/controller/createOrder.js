@@ -34,7 +34,7 @@ const createOrder = async (req, res) => {
                 }
             )),
             success_url: `https://apex-sport.vercel.app/`, //where will send client on success 
-            cancel_url: `https://apex-sport.vercel.app/`,
+            cancel_url: `https://chat.deepseek.com/`,
             metadata: {
                 userId: res.locals.id,
                 productInformationFromCart: JSON.stringify(productInformationFromCart),

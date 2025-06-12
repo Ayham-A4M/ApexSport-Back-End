@@ -33,8 +33,8 @@ const createOrder = async (req, res) => {
 
                 }
             )),
-            success_url: `https://www.google.com`, //where will send client on success 
-            cancel_url: `https://www.google.com`,
+            success_url: `https://apex-sport.vercel.app/orders`, //where will send client on success 
+            cancel_url: `https://apex-sport.vercel.app/cart`,
             metadata: {
                 userId: res.locals.id,
                 productInformationFromCart: JSON.stringify(productInformationFromCart),

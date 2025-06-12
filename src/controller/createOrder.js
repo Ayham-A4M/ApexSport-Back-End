@@ -48,6 +48,7 @@ const createOrder = async (req, res) => {
 
 
     } catch (err) {
+        console.log(err);
         return res.status(500).send({ msg: 'something went wrong' });
     }
 }
